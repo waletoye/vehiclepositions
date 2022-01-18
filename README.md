@@ -20,16 +20,14 @@ The goal is to reduce the Time Complexity from the current benchmark of O(n^2) t
    * Without sorting, the likely Time Complexity is variations of O(n)
    * Also sorting is meaningless since we are looking for "nearest" vehicles not exact match
 
-### Case 1
-Linear BulkSearch  
+### Case 1 - Linear BulkSearch  
  This is the current benchmark  
  For each of the 10 vehicles, find the nearest position  
  * Time Complexity: O(n^2)  
  * Space Complexity: O(1)  
  * Average Processing Time: 4029 ms  
  
- ### Case 2
-Parallel BulkSearch  
+ ### Case 2 - Parallel BulkSearch  
 Concurrently search for the nearest position using threads
  * Time Complexity: O(n)  
  * Space Complexity: O(1),  all threads access the same in-memory data  
