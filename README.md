@@ -13,5 +13,5 @@ Linear BulkSearch
  ### Case 2
 Parallel BulkSearch
  * Time Complexity: O(n)  
- * Space Complexity: O(k), k is number of threads  
+ * Space Complexity: O(1), all threads access the same in-memory data  
  * Average Processing Time: 1342 ms  
