@@ -16,6 +16,6 @@ Linear BulkSearch
  ### Case 2
 Parallel BulkSearch  
 Divide the list (2M) into 10 and use a thread each to concurrently search each of the 200,000 items
- * Time Complexity: O(n/p) n => 2million, p => no of threads    
- * Space Complexity: O(1), all threads access the same in-memory data  
+ * Time Complexity: O(n/p),  n => 2million, p => no of threads    
+ * Space Complexity: O(1),  all threads access the same in-memory data  
  * Average Processing Time: 1342 ms  
