@@ -13,9 +13,12 @@ The goal is to reduce the Time Complexity from the current benchmark of O(n^2) t
 **O(n^2)** > O(n log n) > **O(n)** > O(log n), O(1)  
 
 
-### Assumptions Made
+### Assumptions / Ideas
 * The vechile position coordinates are unsorted
+ * Thus requires visiting each item
 * Sorting is not allowed, since there's no global 'reference point'
+ * Without sorting, the best Time Complexity possible is variations of O(n)
+ * Also sorting is meaningless since we are looking for "nearest" vehicles not exact match
 
 ### Case 1
 Linear BulkSearch  
