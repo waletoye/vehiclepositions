@@ -23,11 +23,14 @@ namespace vehiclepositions
             var sw = new Stopwatch();
             sw.Start();
             LinearBulkSearch(vehiclePositions, sampleVehicles);
-            Console.WriteLine("LinearBulkSearch =>  " + sw.ElapsedMilliseconds);
+            Console.WriteLine("===== LinearBulkSearch {0} ms =====", sw.ElapsedMilliseconds);
+
+            Console.WriteLine();
+            Console.WriteLine();
 
             sw.Restart();
             ParallelBulkSearch(vehiclePositions, sampleVehicles);
-            Console.WriteLine("ParallelBulkSearch =>  " + sw.ElapsedMilliseconds);
+            Console.WriteLine("===== ParallelBulkSearch {0} ms =====", sw.ElapsedMilliseconds);
 
             sw.Stop();
             Console.ReadKey();
@@ -41,24 +44,29 @@ namespace vehiclepositions
         internal static void LinearBulkSearch(List<VehiclePosition> sourcePositions, List<VehicleLocation> sampleVehicles)
         {
             // Time Complexity: O(n^2)
-            // Space Complexity: O(1)
+            // Space Complexity: O(1) 
             //Processing Time: 4029 ms
 
             double minDistance = double.MaxValue;
-            VehiclePosition p;
+            VehiclePosition nearestVehicle = null;
 
             foreach (var vehicle in sampleVehicles)
             {
+                //reset minDistance for each vehicle
+                minDistance = double.MaxValue;
+
                 foreach (var sourcePosition in sourcePositions)
                 {
                     var dist = GeoCalculator.CalculateDistanceInMeters(sourcePosition.Location, vehicle);
 
                     if (dist < minDistance)
-                        p = sourcePosition;
-
-                    minDistance = Math.Min(minDistance, dist);
+                    {
+                        minDistance = Math.Min(minDistance, dist);
+                        nearestVehicle = sourcePosition;
+                    }
                 }
-                vehicle.MinDistInKM = minDistance;
+
+                Console.WriteLine("{0} => Vechicle: {1} distance: {2} meters geo: {3}", vehicle, nearestVehicle.VehicleRegistraton, minDistance, nearestVehicle);
             }
         }
 
@@ -70,7 +78,7 @@ namespace vehiclepositions
         internal static void ParallelBulkSearch(List<VehiclePosition> sourcePositions, List<VehicleLocation> sampleVehicles)
         {
             // Time Complexity: O(n)
-            // Space Complexity: O(k), k is number of threads
+            // Space Complexity: O(1), all threads access the same in-memory data
             //Processing Time: 1342 ms
 
             int k = 10; //number of threads

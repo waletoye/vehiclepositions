@@ -13,6 +13,8 @@ namespace vehiclepositions.Models
         public ulong RecordedTimeUTC { get; set; }
 
         internal Location Location => new Location() { Latitude = Latitude, Longitude = Longitude };
+
+        public override string ToString() => $"{Latitude},{Longitude}";
         //internal DateTimeOffset Date => DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(RecordedTimeUTC.ToString()));
     }
 }

@@ -6,7 +6,6 @@ namespace vehiclepositions.Models
 {
     public class VehicleLocation : Location
     {
-        public Location Location => new Location { Latitude = Latitude, Longitude = Longitude };
-        public double MinDistInKM { get; set; }
+        public override string ToString() => $"{Latitude},{Longitude}";
     }
 }

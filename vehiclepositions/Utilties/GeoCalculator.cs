@@ -11,8 +11,8 @@ namespace vehiclepositions.Utilties
         /// Linear Search
         /// </summary>
         /// <param name="sourcePositions">entire source list</param>
-        /// <param name="location">location to compare</param>
-        internal static void LinearSingleSearch(List<VehiclePosition> sourcePositions, VehicleLocation location)
+        /// <param name="sampleVechicle">sampleVechicle location to compare</param>
+        internal static void LinearSingleSearch(List<VehiclePosition> sourcePositions, VehicleLocation sampleVechicle)
         {
             // Time Complexity: O(n)
             // Space Complexity: O(1)
@@ -22,17 +22,22 @@ namespace vehiclepositions.Utilties
             sw.Start();
 
             double minDistance = double.MaxValue;
+            VehiclePosition nearestVehicle = null;
 
             foreach (var sourcePosition in sourcePositions)
             {
-                var dist = CalculateDistanceInMeters(sourcePosition.Location, location);
-                minDistance = Math.Min(minDistance, dist);
+                var dist = CalculateDistanceInMeters(sourcePosition.Location, sampleVechicle);
+
+                if(dist < minDistance)
+                {
+                    minDistance = Math.Min(minDistance, dist);
+                    nearestVehicle = sourcePosition;
+                }
             }
 
             sw.Stop();
-            Console.WriteLine(minDistance + " " + sourcePositions.Count + " =>  " + sw.ElapsedMilliseconds);
-
-            location.MinDistInKM = minDistance;
+            Console.WriteLine("{0} => Vechicle: {1} distance: {2} meters geo: {3}", sampleVechicle, nearestVehicle.VehicleRegistraton, minDistance, nearestVehicle);
+            //Console.WriteLine(minDistance + " " + sourcePositions.Count + " =>  " + sw.ElapsedMilliseconds);
         }
 
         internal static double CalculateDistanceInMeters(Location point1, Location point2)
