@@ -3,6 +3,9 @@
 ## FLOW
 Load data from binary file, deserialise into objects
 
+### Assumptions Made
+* The vechile position coordinates are unsorted
+
 ### Case 1
 Linear BulkSearch  
  This is the current benchmark  
