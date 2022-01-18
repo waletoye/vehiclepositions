@@ -28,7 +28,7 @@ The goal is to reduce the Time Complexity from the current benchmark of O(n^2) t
  * Average Processing Time: 4029 ms  
  
  ### Case 2 - Parallel BulkSearch  
-Concurrently search for the nearest position using threads
+Concurrently search for the nearest position using parallel search
  * Time Complexity: O(n)  
  * Space Complexity: O(1),  all threads access the same in-memory data  
  * Average Processing Time: 1342 ms  
