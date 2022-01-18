@@ -1,7 +1,7 @@
 # vehiclepositions
  
 ## FLOW
--Load data from binary file into memry
+Load data from binary file, deserialise into objects
 
 ### Case 1
 Linear BulkSearch  
