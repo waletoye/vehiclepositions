@@ -77,17 +77,17 @@ namespace vehiclepositions
         /// <param name="sampleVehicles">sample vehicles</param>
         internal static void ParallelBulkSearch(List<VehiclePosition> sourcePositions, List<VehicleLocation> sampleVehicles)
         {
-            // Time Complexity: O(n/p) n => 2million, p => no of threads
+            // Time Complexity: O(n)
             // Space Complexity: O(1), all threads access the same in-memory data
             // Processing Time: 1342 ms
 
             int p = 10; //number of threads
 
-            Parallel.For(0, p, count =>
+            Parallel.For(0, p, threadId =>
             {
-                //Console.WriteLine($"value of count = {count}, thread = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                //Console.WriteLine($"value of p = {threadId}, thread = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
-                GeoCalculator.LinearSingleSearch(sourcePositions, sampleVehicles[count]);
+                GeoCalculator.LinearSingleSearch(sourcePositions, sampleVehicles[threadId]);
             });
         }
     }
