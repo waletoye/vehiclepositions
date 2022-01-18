@@ -1,8 +1,12 @@
 # vehiclepositions
  
 ## WALKTHROUGH
-1. Load data from binary file, deserialise into objects  
-2. Case 1 shows the current benchmark, while Case 2 demonstrates an optimzation  
+1. Load data from binary file
+2. Deserialise into objects 
+3. Handle Case 1 or Case 2 
+
+
+Case 1 shows the current benchmark, while Case 2 demonstrates an optimzation  
 
 The goal is to reduce the Time Complexity from the current benchmark of O(n^2) to O(n)  
  * O(n^2) > O(n log n) > O(n) > O(log n), O(1)  
