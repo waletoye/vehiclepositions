@@ -10,7 +10,7 @@
 Case 1 shows the current benchmark, while Case 2 demonstrates an optimzation  
 
 The goal is to reduce the Time Complexity from the current benchmark of O(n^2) to O(n)   
-O(n^2) > O(n log n) > O(n) > O(log n), O(1)  
+**O(n^2)** > O(n log n) > **O(n)** > O(log n), O(1)  
 
 
 ### Assumptions Made
