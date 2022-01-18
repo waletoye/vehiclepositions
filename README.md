@@ -8,8 +8,8 @@ Load data from binary file, deserialise into objects
 
 ### Case 1
 Linear BulkSearch  
- This is the current benchmark 
- For each of the 10 vehicles, find the nearest position.
+ This is the current benchmark  
+ For each of the 10 vehicles, find the nearest position  
  * Time Complexity: O(n^2)  
  * Space Complexity: O(1)  
  * Average Processing Time: 4029 ms  
