@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using vehiclepositions.Models;
+using vehiclepositions.Utilties;
 
 namespace vehiclepositions
 {
@@ -12,35 +11,23 @@ namespace vehiclepositions
     {
         static void Main()
         {
-            var sampleVehicles = new List<VehicleLocation>();
-            sampleVehicles.Add(new VehicleLocation { Latitude = 34.544909, Longitude = -102.100843 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 32.345544, Longitude = -99.123124 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 33.234235, Longitude = -100.214124 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 35.195739, Longitude = -95.348899 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 31.895839, Longitude = -97.789573 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 32.895839, Longitude = -101.789573 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 34.115839, Longitude = -100.225732 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 32.335839, Longitude = -99.992232 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 33.535339, Longitude = -94.792232 });
-            sampleVehicles.Add(new VehicleLocation { Latitude = 32.234235, Longitude = -100.222222 });
+            const string fileLocation = @"data\VehiclePositions.dat";
 
-            string pth = @"C:\Users\aadetoye\Downloads\mixtele\VehiclePositions\VehiclePositions.dat";
-            pth = @"data\VehiclePositions.dat";
+            //the 10 vehicles
+            List<VehicleLocation> sampleVehicles = Context.LoadSampleVechicles();
 
-            var positions = ReadAllRecords(pth);
-
+            //vehicle positions from binary data
+            List<VehiclePosition> vehiclePositions = Context.ReadAllRecords(fileLocation);
 
 
             var sw = new Stopwatch();
             sw.Start();
-            LinearBulkSearch(positions, sampleVehicles);
+            LinearBulkSearch(vehiclePositions, sampleVehicles);
             Console.WriteLine("LinearBulkSearch =>  " + sw.ElapsedMilliseconds);
 
             sw.Restart();
-            ParallelBulkSearch(positions, sampleVehicles);
+            ParallelBulkSearch(vehiclePositions, sampleVehicles);
             Console.WriteLine("ParallelBulkSearch =>  " + sw.ElapsedMilliseconds);
-
-
 
             sw.Stop();
             Console.ReadKey();
@@ -64,7 +51,7 @@ namespace vehiclepositions
             {
                 foreach (var sourcePosition in sourcePositions)
                 {
-                    var dist = CalculateDistanceInMeters(sourcePosition.Location, vehicle);
+                    var dist = GeoCalculator.CalculateDistanceInMeters(sourcePosition.Location, vehicle);
 
                     if (dist < minDistance)
                         p = sourcePosition;
@@ -92,91 +79,8 @@ namespace vehiclepositions
             {
                 //Console.WriteLine($"value of count = {count}, thread = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
-                LinearSingleSearch(sourcePositions, sampleVehicles[count]);
+                GeoCalculator.LinearSingleSearch(sourcePositions, sampleVehicles[count]);
             });
-        }
-
-
-        /// <summary>
-        /// Linear Search
-        /// </summary>
-        /// <param name="sourcePositions">entire source list</param>
-        /// <param name="location">location to compare</param>
-        internal static void LinearSingleSearch(List<VehiclePosition> sourcePositions, VehicleLocation location)
-        {
-            // Time Complexity: O(n)
-            // Space Complexity: O(1)
-            //Processing Time: 484 ms
-
-            var sw = new Stopwatch();
-            sw.Start();
-
-            double minDistance = double.MaxValue;
-
-            foreach (var sourcePosition in sourcePositions)
-            {
-                var dist = CalculateDistanceInMeters(sourcePosition.Location, location);
-                minDistance = Math.Min(minDistance, dist);
-            }
-
-            sw.Stop();
-            Console.WriteLine(minDistance + " " + sourcePositions.Count + " =>  " + sw.ElapsedMilliseconds);
-
-            location.MinDistInKM = minDistance;
-        }
-
-        /// <summary>
-        /// Load all vechicle positions from binary data
-        /// </summary>
-        /// <param name="fileName">binary file path</param>
-        /// <returns></returns>
-        internal static List<VehiclePosition> ReadAllRecords(string fileName)
-        {
-            var vehiclePositions = new List<VehiclePosition>();
-
-            using (FileStream fs = new FileStream(fileName, FileMode.Open))
-            {
-                using (BinaryReader br = new BinaryReader(fs, Encoding.Default))
-                {
-                    // Reading character by character while you can read
-                    while (br.BaseStream.Position != br.BaseStream.Length)
-                    {
-                        try
-                        {
-                            var vechpos = new VehiclePosition
-                            {
-                                Position = br.ReadInt32(),
-                                VehicleRegistraton = Encoding.ASCII.GetString(br.ReadBytes(10)), //.Substring(0,9),
-                                Latitude = br.ReadSingle(),
-                                Longitude = br.ReadSingle(),
-                                RecordedTimeUTC = br.ReadUInt64(),
-                            };
-
-                            vehiclePositions.Add(vechpos);
-                        }
-                        catch (Exception ex)
-                        {
-
-                        }
-                    }
-                }
-            }
-
-            return vehiclePositions;
-        }
-
-        internal static double CalculateDistanceInMeters(Location point1, Location point2)
-        {
-            var d1 = point1.Latitude * (Math.PI / 180.0);
-            var num1 = point1.Longitude * (Math.PI / 180.0);
-            var d2 = point2.Latitude * (Math.PI / 180.0);
-            var num2 = point2.Longitude * (Math.PI / 180.0) - num1;
-            var d3 = Math.Pow(Math.Sin((d2 - d1) / 2.0), 2.0) +
-                     Math.Cos(d1) * Math.Cos(d2) * Math.Pow(Math.Sin(num2 / 2.0), 2.0);
-
-            var result = 6376500.0 * (2.0 * Math.Atan2(Math.Sqrt(d3), Math.Sqrt(1.0 - d3)));
-
-            return result;
         }
     }
 }
