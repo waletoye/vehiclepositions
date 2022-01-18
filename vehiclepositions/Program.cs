@@ -45,7 +45,7 @@ namespace vehiclepositions
         {
             // Time Complexity: O(n^2)
             // Space Complexity: O(1) 
-            //Processing Time: 4029 ms
+            // Processing Time: 4029 ms
 
             double minDistance = double.MaxValue;
             VehiclePosition nearestVehicle = null;
@@ -77,13 +77,13 @@ namespace vehiclepositions
         /// <param name="sampleVehicles">sample vehicles</param>
         internal static void ParallelBulkSearch(List<VehiclePosition> sourcePositions, List<VehicleLocation> sampleVehicles)
         {
-            // Time Complexity: O(n)
+            // Time Complexity: O(n/p) n => 2million, p => no of threads
             // Space Complexity: O(1), all threads access the same in-memory data
-            //Processing Time: 1342 ms
+            // Processing Time: 1342 ms
 
-            int k = 10; //number of threads
+            int p = 10; //number of threads
 
-            Parallel.For(0, k, count =>
+            Parallel.For(0, p, count =>
             {
                 //Console.WriteLine($"value of count = {count}, thread = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
