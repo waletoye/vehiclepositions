@@ -6,14 +6,19 @@
 3. Handle Case 1 or Case 2 
 
 <br />
+
 Case 1 shows the current benchmark, while Case 2 demonstrates an optimzation  
 
 The goal is to reduce the Time Complexity from the current benchmark of O(n^2) to O(n)  
  * O(n^2) > O(n log n) > O(n) > O(log n), O(1)  
 
+<br />
+
 ### Assumptions Made
 * The vechile position coordinates are unsorted
 * Sorting is not allowed, since there's no global 'reference point'
+
+<br />
 
 ### Case 1
 Linear BulkSearch  
@@ -22,6 +27,8 @@ Linear BulkSearch
  * Time Complexity: O(n^2)  
  * Space Complexity: O(1)  
  * Average Processing Time: 4029 ms  
+ 
+ <br />
  
  ### Case 2
 Parallel BulkSearch  
