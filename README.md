@@ -14,6 +14,7 @@ The goal is to reduce the Time Complexity from the current benchmark of O(n^2) t
 
 
 ### Assumptions / Ideas
+* The app machine has multiple cores
 * The vechile position coordinates are unsorted
    * Thus requires visiting each item
 * Sorting is not allowed, since there's no global 'reference point'
