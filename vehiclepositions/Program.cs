@@ -23,14 +23,13 @@ namespace vehiclepositions
             var sw = new Stopwatch();
             sw.Start();
             LinearBulkSearch(vehiclePositions, sampleVehicles);
-            Console.WriteLine("===== LinearBulkSearch {0} ms =====", sw.ElapsedMilliseconds);
+            Logger.ConsoleLogger(msg: $"===== Linear BulkSearch {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n^2)");
 
-            Console.WriteLine();
-            Console.WriteLine();
+            Logger.ConsoleLogger(msg: "\n\n");
 
             sw.Restart();
             ParallelBulkSearch(vehiclePositions, sampleVehicles);
-            Console.WriteLine("===== ParallelBulkSearch {0} ms =====", sw.ElapsedMilliseconds);
+            Logger.ConsoleLogger(msg: $"===== Parallel BulkSearch {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n)");
 
             sw.Stop();
             Console.ReadKey();
@@ -66,7 +65,7 @@ namespace vehiclepositions
                     }
                 }
 
-                Console.WriteLine("{0} => Vechicle: {1} distance: {2} meters geo: {3}", vehicle, nearestVehicle.VehicleRegistraton, minDistance, nearestVehicle);
+                Logger.ConsoleLogger(vehicle, nearestVehicle.VehicleRegistraton, minDistance, nearestVehicle);
             }
         }
 

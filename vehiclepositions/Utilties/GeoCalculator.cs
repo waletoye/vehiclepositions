@@ -36,7 +36,8 @@ namespace vehiclepositions.Utilties
             }
 
             sw.Stop();
-            Console.WriteLine("{0} => Vechicle: {1} distance: {2} meters geo: {3}", sampleVechicle, nearestVehicle.VehicleRegistraton, minDistance, nearestVehicle);
+
+            Logger.ConsoleLogger(sampleVechicle, nearestVehicle.VehicleRegistraton, minDistance, nearestVehicle);
             //Console.WriteLine(minDistance + " " + sourcePositions.Count + " =>  " + sw.ElapsedMilliseconds);
         }
 
