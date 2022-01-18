@@ -17,6 +17,6 @@ Linear BulkSearch
  ### Case 2
 Parallel BulkSearch  
 Concurrently search for the nearest position using threads
- * Time Complexity: O(n/p),  n -> 2million, p -> no of threads    
+ * Time Complexity: O(n)  
  * Space Complexity: O(1),  all threads access the same in-memory data  
  * Average Processing Time: 1342 ms  
