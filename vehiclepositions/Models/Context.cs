@@ -47,6 +47,10 @@ namespace vehiclepositions.Models
             return vehiclePositions;
         }
 
+        /// <summary>
+        /// The 10 vehicles
+        /// </summary>
+        /// <returns>List of the 10 vehicles</returns>
         internal static List<VehicleLocation> LoadSampleVechicles()
         {
             var sampleVehicles = new List<VehicleLocation>();

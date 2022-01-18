@@ -70,7 +70,7 @@ namespace vehiclepositions
         }
 
         /// <summary>
-        /// Parrallel Bulk Search: create 10 threads to concurrently loop through 2million vehicles
+        /// Parrallel Bulk Search: create 10 threads to concurrently search through 2million vehicles
         /// </summary>
         /// <param name="sourcePositions">entire source list</param>
         /// <param name="sampleVehicles">sample vehicles</param>
