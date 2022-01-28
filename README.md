@@ -39,5 +39,5 @@ Concurrently search for the nearest position using parallel search
 Use KDTree to improve speed
  * Time Complexity: O(n log n)  
  * Space Complexity: O(n), 
- * Average Processing Time: 16 ms  
+ * Average Processing Time: 2 ms for search only  
 
