@@ -22,7 +22,7 @@ namespace vehiclepositions
 
 
             //try 1: linear and parallel search approach
-            Utilties.LinearSearch.Linear_ParallelSearch(sampleVehicles, vehiclePositions);
+            //Utilties.LinearSearch.Linear_ParallelSearch(sampleVehicles, vehiclePositions);
 
             //try 2: KDTree approach
             NearestNeighbourSearch(vehiclePositions, sampleVehicles);

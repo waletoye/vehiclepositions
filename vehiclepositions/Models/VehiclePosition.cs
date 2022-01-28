@@ -11,6 +11,7 @@ namespace vehiclepositions.Models
         public float Latitude { get; set; }
         public float Longitude { get; set; }
         public ulong RecordedTimeUTC { get; set; }
+        public double DistanceToOrigin { get; internal set; }
 
         internal Location Location => new Location() { Latitude = Latitude, Longitude = Longitude };
 
