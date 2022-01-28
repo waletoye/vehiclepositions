@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using vehiclepositions.Models;
 using vehiclepositions.Utilties;
 
@@ -11,83 +11,59 @@ namespace vehiclepositions
     {
         static void Main()
         {
-            const string fileLocation = @"data\VehiclePositions.dat";
+            const string fileLocation = @"Data/VehiclePositions.dat";
 
             //the 10 vehicles
             List<VehicleLocation> sampleVehicles = Context.LoadSampleVechicles();
 
+
             //vehicle positions from binary data
             List<VehiclePosition> vehiclePositions = Context.ReadAllRecords(fileLocation);
 
+            //try 1: linear and parallel search approach
+            Utilties.LinearSearch.Linear_ParallelSearch(sampleVehicles, vehiclePositions);
 
-            var sw = new Stopwatch();
-            sw.Start();
-            LinearBulkSearch(vehiclePositions, sampleVehicles);
-            Logger.ConsoleLogger(msg: $"===== Linear BulkSearch {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n^2)");
+            //try 2: KDTree approach
+            NearestNeighbourSearch(vehiclePositions, sampleVehicles);
 
-            Logger.ConsoleLogger(msg: "\n\n");
 
-            sw.Restart();
-            ParallelBulkSearch(vehiclePositions, sampleVehicles);
-            Logger.ConsoleLogger(msg: $"===== Parallel BulkSearch {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n)");
-
-            sw.Stop();
             Console.ReadKey();
         }
 
         /// <summary>
-        /// Linear Bulk Search: foreach sample, loop through 2million vehicles linearly
+        /// Nearest Neighbour Search using KDTree
         /// </summary>
-        /// <param name="sourcePositions">entire source list</param>
-        /// <param name="sampleVehicles">sample vehicle</param>
-        internal static void LinearBulkSearch(List<VehiclePosition> sourcePositions, List<VehicleLocation> sampleVehicles)
+        /// <param name="vehiclePositions"></param>
+        /// <param name="sampleVehicles"></param>
+        static void NearestNeighbourSearch(List<VehiclePosition> vehiclePositions, List<VehicleLocation> sampleVehicles)
         {
-            // Time Complexity: O(n^2)
-            // Space Complexity: O(1) 
-            // Processing Time: 4029 ms
-
-            double minDistance = double.MaxValue;
-            VehiclePosition nearestVehicle = null;
-
-            foreach (var vehicle in sampleVehicles)
-            {
-                //reset minDistance for each vehicle
-                minDistance = double.MaxValue;
-
-                foreach (var sourcePosition in sourcePositions)
-                {
-                    var dist = GeoCalculator.CalculateDistanceInMeters(sourcePosition.Location, vehicle);
-
-                    if (dist < minDistance)
-                    {
-                        minDistance = Math.Min(minDistance, dist);
-                        nearestVehicle = sourcePosition;
-                    }
-                }
-
-                Logger.ConsoleLogger(vehicle, nearestVehicle.VehicleRegistraton, minDistance, nearestVehicle);
-            }
-        }
-
-        /// <summary>
-        /// Parrallel Bulk Search: create 10 threads to concurrently search through 2million vehicles
-        /// </summary>
-        /// <param name="sourcePositions">entire source list</param>
-        /// <param name="sampleVehicles">sample vehicles</param>
-        internal static void ParallelBulkSearch(List<VehiclePosition> sourcePositions, List<VehicleLocation> sampleVehicles)
-        {
-            // Time Complexity: O(n)
+            // Time Complexity: (n log n)
             // Space Complexity: O(1), all threads access the same in-memory data
-            // Processing Time: 1342 ms
+            // Processing Time: 5903ms with tree building
+            //                  43ms after tree is built
 
-            int p = 10; //number of threads
 
-            Parallel.For(0, p, threadId =>
+
+            KDTree kdt = new KDTree(vehiclePositions.Count);
+            foreach (var point in vehiclePositions)
             {
-                //Console.WriteLine($"value of p = {threadId}, thread = {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                kdt.Add(new double[] { point.Latitude, point.Longitude });
+            }
 
-                GeoCalculator.LinearSingleSearch(sourcePositions, sampleVehicles[threadId]);
-            });
+
+            var sw = new Stopwatch();
+            sw.Start();
+
+
+            for (int i = 0; i < sampleVehicles.Count; i++)
+            {
+                Node kdn = kdt.find_nearest(new double[] { sampleVehicles[i].Latitude, sampleVehicles[i].Longitude });
+                Console.WriteLine("lat:{0}, long:{1}  ==> lat:{2}, long:{3}", sampleVehicles[i].Latitude, sampleVehicles[i].Longitude, kdn.x[0], kdn.x[1]);
+            }
+
+            sw.Stop();
+            Logger.ConsoleLogger(msg: $"===== KDTree {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n log n)");
+
         }
     }
 }
