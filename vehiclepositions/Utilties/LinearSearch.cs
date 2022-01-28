@@ -37,7 +37,7 @@ namespace vehiclepositions.Utilties
         {
             // Time Complexity: O(n^2)
             // Space Complexity: O(1) 
-            // Processing Time: 4029 ms
+            // Processing Time: 3489 ms
 
             double minDistance = double.MaxValue;
             VehiclePosition nearestVehicle = null;
@@ -72,7 +72,7 @@ namespace vehiclepositions.Utilties
         {
             // Time Complexity: O( (n^2)/ p), p = no of threads
             // Space Complexity: O(1), all threads access the same in-memory data
-            // Processing Time: 1342 ms
+            // Processing Time: 1333 ms
 
             int p = 10; //number of threads
 

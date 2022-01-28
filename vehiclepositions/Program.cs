@@ -40,29 +40,34 @@ namespace vehiclepositions
         {
             // Time Complexity: (n log n)
             // Space Complexity: O(1), all threads access the same in-memory data
-            // Processing Time: 6060ms to build tree 
-            //                  43ms to pefrom the 10 searches 
+            // Processing Time: 4647ms to build tree 
+            //                  16ms to pefrom the 10 searches 
 
 
             //a possible optimzation is to build the tree as coordinatees are extracted from the binary file
+
+
+            var sw = new Stopwatch();
+            sw.Start();
 
             KDTree kdt = new KDTree(vehiclePositions.Count);
             foreach (var point in vehiclePositions)
             {
                 kdt.Add(new double[] { point.Latitude, point.Longitude });
             }
+            
+            Logger.ConsoleLogger(msg: $"===== KDTree {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n log n)");
 
-            var sw = new Stopwatch();
-            sw.Start();
-
-
+            sw.Restart();
             for (int i = 0; i < sampleVehicles.Count; i++)
             {
                 Node kdn = kdt.Find_Nearest(new double[] { sampleVehicles[i].Latitude, sampleVehicles[i].Longitude });
                 Console.WriteLine("lat:{0}, long:{1}  ==> lat:{2}, long:{3}", sampleVehicles[i].Latitude, sampleVehicles[i].Longitude, kdn.x[0], kdn.x[1]);
             }
+
             sw.Stop();
             Logger.ConsoleLogger(msg: $"===== KDTree {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n log n)");
+
         }
     }
 }
