@@ -3,13 +3,13 @@
 ## WALKTHROUGH
 1. Load data from binary file
 2. Deserialise into objects 
-3. Handle Case 1 or Case 2 
+3. Handle each case
 
 <br />
 
 Case 1 shows the current benchmark, while Case 2 demonstrates an optimzation  
 
-The goal is to reduce the Time Complexity from the current benchmark of O(n^2) to O(n)   
+The goal is to reduce the Time Complexity from the current benchmark of O(n^2)   
 **O(n^2)** > O(n log n) > **O(n)** > O(log n), O(1)  
 
 
@@ -24,12 +24,20 @@ The goal is to reduce the Time Complexity from the current benchmark of O(n^2) t
 ### Case 1 - Linear BulkSearch  
  This is the current benchmark  
  For each of the 10 vehicles, find the nearest position  
- * Time Complexity: O(n^2)  
- * Space Complexity: O(1)  
+ * Time Complexity: O(n^2)
+ * Space Complexity: O(n)  
  * Average Processing Time: 4029 ms  
  
  ### Case 2 - Parallel BulkSearch  
 Concurrently search for the nearest position using parallel search
- * Time Complexity: O(n)  
- * Space Complexity: O(1),  all threads access the same in-memory data  
+ * Time Complexity: O( (n^2)/ p), p = no of threads    
+ * Space Complexity: O(n),  all threads access the same in-memory data  
  * Average Processing Time: 1342 ms  
+
+
+ ### Case 3 - Nearest Neighbour Search - KDTree
+Use KDTree to improve speed
+ * Time Complexity: O(n log n)  
+ * Space Complexity: O(n), 
+ * Average Processing Time: 43 ms  
+
