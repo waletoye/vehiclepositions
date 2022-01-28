@@ -4,7 +4,13 @@ namespace vehiclepositions.Utilties
     class Node
     {
         internal int axis;
+
+        //x[0] -> latitude
+        //x[1] -> longitude
+
         internal double[] x;
+
+
         internal int id;
         internal bool visited;
         internal bool orientation;
@@ -97,9 +103,7 @@ namespace vehiclepositions.Utilties
         double d_min;
         Node nearest_neighbour;
 
-        int KD_id;
-
-        int nList;
+        int KD_id, nList;
 
         Node[] visitedNodes;
         int visited_nodes;
@@ -149,7 +153,7 @@ namespace vehiclepositions.Utilties
             return true;
         }
 
-        public Node find_nearest(double[] x)
+        public Node Find_Nearest(double[] x)
         {
             if (Root == null)
                 return null;
@@ -163,20 +167,20 @@ namespace vehiclepositions.Utilties
             if (parent.Equal(x, parent.x, 2) == true)
                 return nearest_neighbour;
 
-            search_parent(parent, x);
-            uncheck();
+            SearchParent(parent, x);
+            Uncheck();
 
             return nearest_neighbour;
         }
 
-        public void check_subtree(Node node, double[] x)
+        public void CheckSubtree(Node node, double[] x)
         {
             if ((node == null) || node.visited)
                 return;
 
             visitedNodes[visited_nodes++] = node;
             node.visited = true;
-            set_bounding_cube(node, x);
+            SetBoundingCube(node, x);
 
             int dim = node.axis;
             double d = node.x[dim] - x[dim];
@@ -184,18 +188,18 @@ namespace vehiclepositions.Utilties
             if (d * d > d_min)
             {
                 if (node.x[dim] > x[dim])
-                    check_subtree(node.Left, x);
+                    CheckSubtree(node.Left, x);
                 else
-                    check_subtree(node.Right, x);
+                    CheckSubtree(node.Right, x);
             }
             else
             {
-                check_subtree(node.Left, x);
-                check_subtree(node.Right, x);
+                CheckSubtree(node.Left, x);
+                CheckSubtree(node.Right, x);
             }
         }
 
-        public void set_bounding_cube(Node node, double[] x)
+        public void SetBoundingCube(Node node, double[] x)
         {
             if (node == null)
                 return;
@@ -245,7 +249,7 @@ namespace vehiclepositions.Utilties
             }
         }
 
-        public Node search_parent(Node parent, double[] x)
+        public Node SearchParent(Node parent, double[] x)
         {
             for (int k = 0; k < 2; k++)
             {
@@ -257,7 +261,7 @@ namespace vehiclepositions.Utilties
             Node search_root = parent;
             while (parent != null && (n_boundary != 2 * 2))
             {
-                check_subtree(parent, x);
+                CheckSubtree(parent, x);
                 search_root = parent;
                 parent = parent.Parent;
             }
@@ -265,7 +269,7 @@ namespace vehiclepositions.Utilties
             return search_root;
         }
 
-        public void uncheck()
+        public void Uncheck()
         {
             for (int n = 0; n < visited_nodes; n++)
                 visitedNodes[n].visited = false;
