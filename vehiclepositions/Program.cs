@@ -22,7 +22,7 @@ namespace vehiclepositions
 
 
             //try 1: linear and parallel search approach
-            //Utilties.LinearSearch.Linear_ParallelSearch(sampleVehicles, vehiclePositions);
+            Utilties.LinearSearch.Linear_ParallelSearch(sampleVehicles, vehiclePositions);
 
             //try 2: KDTree approach
             NearestNeighbourSearch(vehiclePositions, sampleVehicles);
@@ -44,19 +44,16 @@ namespace vehiclepositions
             //                  43ms to pefrom the 10 searches 
 
 
+            //a possible optimzation is to build the tree as coordinatees are extracted from the binary file
 
-            var sw = new Stopwatch();
-            sw.Start();
             KDTree kdt = new KDTree(vehiclePositions.Count);
             foreach (var point in vehiclePositions)
             {
                 kdt.Add(new double[] { point.Latitude, point.Longitude });
             }
 
-
-
-            sw.Stop();
-            Logger.ConsoleLogger(msg: $"===== KDTree {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n log n)");
+            var sw = new Stopwatch();
+            sw.Start();
 
 
             for (int i = 0; i < sampleVehicles.Count; i++)
@@ -64,7 +61,8 @@ namespace vehiclepositions
                 Node kdn = kdt.Find_Nearest(new double[] { sampleVehicles[i].Latitude, sampleVehicles[i].Longitude });
                 Console.WriteLine("lat:{0}, long:{1}  ==> lat:{2}, long:{3}", sampleVehicles[i].Latitude, sampleVehicles[i].Longitude, kdn.x[0], kdn.x[1]);
             }
-
+            sw.Stop();
+            Logger.ConsoleLogger(msg: $"===== KDTree {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O(n log n)");
         }
     }
 }

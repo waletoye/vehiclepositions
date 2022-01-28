@@ -23,7 +23,7 @@ namespace vehiclepositions.Utilties
 
             sw.Restart();
             ParallelBulkSearch(vehiclePositions, sampleVehicles);
-            Logger.ConsoleLogger(msg: $"===== Parallel BulkSearch {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: \n\n");
+            Logger.ConsoleLogger(msg: $"===== Parallel BulkSearch {sw.ElapsedMilliseconds} ms ===== \n\t Time Complexity: O( (n^2)/p ), p = no of threads \n\n");
 
             sw.Stop();
         }
@@ -62,6 +62,7 @@ namespace vehiclepositions.Utilties
             }
         }
 
+
         /// <summary>
         /// Parrallel Bulk Search: create 10 threads to concurrently search through 2million vehicles
         /// </summary>
@@ -69,7 +70,7 @@ namespace vehiclepositions.Utilties
         /// <param name="sampleVehicles">sample vehicles</param>
         private static void ParallelBulkSearch(List<VehiclePosition> sourcePositions, List<VehicleLocation> sampleVehicles)
         {
-            // Time Complexity: 
+            // Time Complexity: O( (n^2)/ p), p = no of threads
             // Space Complexity: O(1), all threads access the same in-memory data
             // Processing Time: 1342 ms
 
